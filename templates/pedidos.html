@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>⊰ PEDIDOS NO SISTEMA ⊱</h2>
+
+{% if session.get('tipo_usuario') in ['funcionario', 'admin'] %}
+
+<div class="grafico-box">
+    <h3>Produtos mais comprados</h3>
+
+    <div class="grafico-container">
+        <canvas id="graficoProdutos"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/graficos.js') }}"></script>
+
+{% endif %}
+
+{% if not pedidos %}
+
+    <p>Nenhum pedido encontrado.</p>
+{% else %}
+    {% for p in pedidos %}
+        <div class="card-pedido">
+            <h3>Pedido de: {{ p.cliente }} <span class="badge">{{ p.dados.status }}</span></h3>
+            <p><strong>Tipo:</strong> {{ p.dados.tipo }} | <strong>Item:</strong> {{ p.dados.item }} ({{ p.dados.sabor }})</p>
+            <p><strong>Preço Total:</strong> R$ {{ "%.2f"|format(p.dados.preco) }}</p>
+            <p><strong>Data:</strong> {{ p.dados.data }}</p>
+            <p><strong>Pagamento:</strong> {{ p.dados.pagamento_info }}</p>
+            
+            {% if p.dados.endereco %}
+                <p><strong>Endereço de Entrega:</strong> {{ p.dados.endereco }} (Taxa: R$10,00)</p>
+            {% endif %}
+            
+            {% if p.dados.cor %}
+                <p><strong>Customização:</strong> Cor {{ p.dados.cor }} | Confeito: {{ p.dados.confeito }}</p>
+            {% endif %}
+            
+            {% if p.dados.observacao %}
+                <p><strong>Obs:</strong> {{ p.dados.observacao }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

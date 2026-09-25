@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-box">
+
+    <h2>⊰ ESCOLHA SEU PRODUTO ⊱</h2>
+
+    <div class="produtos-grid">
+
+        {% for produto in produtos %}
+
+        <label class="produto-card">
+
+            <input
+                type="radio"
+                name="produto_id"
+                value="{{ produto['id'] }}"
+                required
+                form="form-compra">
+
+            {% if produto['foto'] %}
+
+                <img
+                    src="{{ url_for('imagem_produto', produto_id=produto['id']) }}"
+                    class="foto-produto">
+
+            {% else %}
+
+                <div class="foto-produto-sem-imagem">
+                    🧁
+                </div>
+
+            {% endif %}
+
+            <div class="produto-info">
+
+                <h3>
+                    {{ produto['categoria'].capitalize() }}
+                </h3>
+
+                <p>
+                    {{ produto['sabor'].capitalize() }}
+                </p>
+
+                <strong>
+                    R$ {{ "%.2f"|format(produto['preco']) }}
+                </strong>
+
+            </div>
+
+        </label>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<div class="auth-box">
+
+    <h2>⊰ FINALIZAR PEDIDO ⊱</h2>
+
+    <form
+        id="form-compra"
+        action="{{ url_for('comprar_web') }}"
+        method="POST">
+
+        <div class="form-group">
+
+            <label>Tipo de Pedido:</label>
+
+            <select name="tipo_pedido">
+
+                <option value="fisica">
+                    Física
+                </option>
+
+                <option value="delivery">
+                    Delivery (+ R$10,00 Taxa)
+                </option>
+
+                <option value="encomenda">
+                    Encomenda Especial
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Quantidade:</label>
+
+            <input
+                type="number"
+                name="quantidade"
+                value="1"
+                min="1"
+                required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Forma de Pagamento:</label>
+
+            <select name="metodo_pagamento">
+
+                <option value="pix">Pix</option>
+                <option value="dinheiro">Dinheiro</option>
+                <option value="cartao_debito">
+                    Cartão de Débito
+                </option>
+                <option value="cartao_credito">
+                    Cartão de Crédito
+                </option>
+
+            </select>
+
+        </div>
+
+        <h3>Campos opcionais</h3>
+
+        <div class="form-group">
+
+            <label>Endereço de Entrega:</label>
+
+            <input
+                type="text"
+                name="endereco_entrega">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Cor:</label>
+
+            <input
+                type="text"
+                name="cor">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Confeito:</label>
+
+            <input
+                type="text"
+                name="confeito">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Observações:</label>
+
+            <textarea name="observacao"></textarea>
+
+        </div>
+
+        <button type="submit">
+            Finalizar Compra
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Confeitaria Web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <span style="font-size: 20px; font-weight: bold; color: #e8a7a1;">˙ . 🍰 . ˙ Confeitaria PWD</span>
+        <div>
+            {% if session.get('usuario') %}
+
+    {% if session.get('tipo_usuario') == 'cliente' %}
+
+        <a href="{{ url_for('comprar_web') }}">
+            Comprar
+        </a>
+
+        <a href="{{ url_for('perfil') }}">
+            Meu Perfil
+        </a>
+
+        <a href="{{ url_for('conquistas') }}">
+            Conquistas
+        </a>
+
+    {% endif %}
+
+    {% if session.get('tipo_usuario') == 'admin' %}
+
+        <a href="{{ url_for('admin_produtos') }}">
+            Gerenciar Produtos
+        </a>
+
+        <a href="{{ url_for('admin_banco') }}">
+            Banco de Dados
+        </a>
+
+    {% endif %}
+
+    <a href="{{ url_for('ver_pedidos') }}">
+        Ver Pedidos
+    </a>
+
+    <a
+        href="{{ url_for('logout') }}"
+        style="color: red;">
+        Sair
+    </a>
+
+{% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-messages">
+                {{ messages[0] }}
+            </div>
+          {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

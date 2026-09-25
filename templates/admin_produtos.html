@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-box">
+
+    <h2>⊰ ADMINISTRAÇÃO DOS PRODUTOS ⊱</h2>
+
+    <p>
+        Aqui você pode adicionar ou alterar as fotos dos produtos.
+    </p>
+
+    <br>
+
+    {% for produto in produtos %}
+
+    <div class="admin-produto">
+
+        <div class="admin-produto-info">
+
+            {% if produto['foto'] %}
+
+                <img
+                    src="{{ url_for('imagem_produto', produto_id=produto['id']) }}"
+                    class="foto-produto-admin">
+
+            {% else %}
+
+                <div class="foto-produto-sem-imagem">
+                    🧁
+                </div>
+
+            {% endif %}
+
+            <div>
+
+                <h3>
+                    {{ produto['categoria'].capitalize() }}
+                </h3>
+
+                <p>
+                    Sabor: {{ produto['sabor'].capitalize() }}
+                </p>
+
+                <p>
+                    <strong>
+                        R$ {{ "%.2f"|format(produto['preco']) }}
+                    </strong>
+                </p>
+
+            </div>
+
+        </div>
+
+        <form
+            action="{{ url_for('admin_foto_produto', produto_id=produto['id']) }}"
+            method="POST"
+            enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="foto"
+                accept=".png,.jpg,.jpeg,.gif,.webp"
+                required>
+
+            <button type="submit">
+                {% if produto['foto'] %}
+                    Alterar foto
+                {% else %}
+                    Adicionar foto
+                {% endif %}
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

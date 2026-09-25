@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="conquistas-page">
+
+    <div class="auth-box conquistas-header">
+
+        <h2>⊰ MINHAS CONQUISTAS ⊱</h2>
+
+        <p>
+            A cada 5 compras de uma categoria, sua medalha evolui.
+        </p>
+
+    </div>
+
+    <div class="conquistas-grid">
+
+        {% for conquista in conquistas %}
+
+        <div class="conquista-card">
+
+            <h3>
+                {{ conquista['nome'] }}
+            </h3>
+
+            <img
+                src="{{ url_for('static', filename='conquistas/' ~ conquista['imagem']) }}"
+                class="medalha-conquista"
+                alt="Medalha de {{ conquista['nivel'] }}">
+
+            <h4>
+                {{ conquista['nivel'] }}
+            </h4>
+
+            <p>
+                {{ conquista['total'] }} compra(s)
+            </p>
+
+            {% if conquista['nivel'] != 'Azul' %}
+
+                <div class="barra-progresso">
+
+                    <div
+                        class="barra-progresso-preenchida"
+                        style="width: {{ conquista['progresso'] }}%;">
+                    </div>
+
+                </div>
+
+                <p class="progresso-texto">
+                    {{ conquista['faltam'] }}
+                    compra(s) para a próxima medalha
+                </p>
+
+            {% else %}
+
+                <p class="conquista-maxima">
+                    Conquista máxima alcançada!
+                </p>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
